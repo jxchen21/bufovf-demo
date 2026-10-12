@@ -5,8 +5,9 @@
 
 
 void win(void) {
-    setreuid(geteuid(), geteuid());   /* keep euid so the shell can read the flag */
-    system("/bin/sh");
+    printf("You won!\n");
+    fflush(stdout);
+    exit(0);
 }
 
 void vuln(void) {

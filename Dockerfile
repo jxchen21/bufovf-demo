@@ -36,10 +36,10 @@ RUN useradd -m -s /bin/bash student
 # Secret flag: owned by root, readable only by root (student cannot cat it directly).
 # base64-obfuscated so it isn't readable at a glance in the repo (NOT real
 # secrecy -- it's still recoverable from the image / docker history).
-#   to change it:  printf '%s' 'CS3210{your_flag}' | base64
-RUN echo 'Q1MzMjEwe0k8M3B3bn0=' | base64 -d > /flag.txt \
-    && chown root:root /flag.txt \
-    && chmod 400 /flag.txt
+#   to change it:  printf '%s\n' 'CS3210{your_flag}' | base64
+RUN echo 'Q1MzMjEwe0k8M3B3bn0K' | base64 -d > /flag \
+    && chown root:root /flag \
+    && chmod 400 /flag
 
 # Graded challenge binaries, built setuid-root OUTSIDE the bind mount.
 # Flags match each challenge's Makefile so addresses line up with local builds.
