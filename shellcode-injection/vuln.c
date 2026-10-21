@@ -3,8 +3,8 @@
 
 void vuln(void) {
     char buf[64];
-    printf("buf is at %p\n", buf);   /* address leak */
-    read(0, buf, 256);               /* binary-safe: raw shellcode bytes pass through */
+    printf("buf is at %p\n", buf);
+    read(0, buf, 256);
 }
 
 int main(void) {
