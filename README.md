@@ -43,6 +43,15 @@ Protections for this challenge:
     Stack:      Executable
 ```
 
+## Setup Information
+
+Start the docker image with `./run.sh`. To run your exploit against the target binary, simply run `./exploit.py`. If you would like to step through in gdb, run the exploit in tmux: 
+
+```
+tmux
+./exploit.py --debug
+```
+
 Resources: 
 - [Smashing the Stack](https://phrack.org/issues/49/smashing-the-stack-for-fun-and-profit)
 - [CS 6265 Tutorials](https://tc.gts3.org/cs6265/tut/)
