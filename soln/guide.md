@@ -198,7 +198,7 @@ After stepping into the next instruction, we can see that our shellcode has succ
 | ...
 ```
 Once the shellcode executes, a shell should open for us to secure the flag. 
-(Note - this might not work within GDB, but it should notify you that a shell process is starting)
+(Note - this might not work within GDB, but it should notify you that a shell process is starting. ptrace has strict privilege boundaries enforced!)
 
 Resources: 
 - [Smashing the Stack](https://phrack.org/issues/49/smashing-the-stack-for-fun-and-profit)
