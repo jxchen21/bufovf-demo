@@ -191,7 +191,7 @@ buf_addr = int(p.recvline().strip(), 16)
 ```
 If you're curious, here's a walkthrough you can use to get to this point: 
 
-Start by checking the output of a simple p.recv(): 
+Start by checking the output of a simple p.recvline(): 
 
 ```
 print(p.recvline()) <- write this in your script before p.interactive()
