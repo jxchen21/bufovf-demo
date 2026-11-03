@@ -158,7 +158,7 @@ For our input, we will once again be making use of pwntools, this time through t
 used to generate a variety of shellcode, and for this challenge we will be using it to open a shell (via execve(path='/bin///sh', argv=['sh'], envp=0) - for more specifics, take a look
 at the included shellcode.S asm file) Up to you how much you want to discuss this shellcode, but you can generate an assembly bytestream via asm(shellcraft.sh()) in your script. 
 
-After sending this as our payload, we can inspect the buffer via GDB using the x/i instruction to interpret the data as instructions: 
+After sending this as our payload, we can inspect the buffer via GDB using the x/i instruction to interpret the data as instructions (Recall that we found in challenge 1 we could access the buffer via $ebp-0x48): 
 
 ```
 x/20i $ebp-0x48
@@ -189,6 +189,23 @@ Now all we have to do is figure out how to redirect execution to this code! For 
 p.recvuntil(b'buf is at ')
 buf_addr = int(p.recvline().strip(), 16)
 ```
+If you're curious, here's a walkthrough you can use to get to this point: 
+
+Start by checking the output of a simple p.recv(): 
+
+```
+print(p.recvline()) <- write this in your script before p.interactive()
+...
+b'buf is at 0xffd4f9e0\n'
+```
+We only need the output after the prefix 'buf is at '; fortunately, the recvuntil() function gives us a very simple way to do this! recvuntil() essentially swallows any input until it receives the specified string, and the next recv() will start reading from after that point. 
+```
+p.recvuntil(b'buf is at ') <- update our script with this! Make sure the string is a bytestream (b prefix)
+print(p.recvline())
+...
+b'0xffc615b0\n'
+```
+From here, we can just use regular python functionality to yield our final leaked address (use .strip() to remove the trailing newline, and int(x, 16) to convert the bytestream to an integer value so we can pack it with p32()). 
 
 After constructing our full exploit consisting of the shellcode, padding, and buffer address, we can inspect the execution in GDB: 
 
