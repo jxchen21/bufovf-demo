@@ -198,7 +198,7 @@ print(p.recvline()) <- write this in your script before p.interactive()
 ...
 b'buf is at 0xffd4f9e0\n'
 ```
-We only need the output after the prefix 'buf is at '; fortunately, the recvuntil() function gives us a very simple way to do this! recvuntil() essentially swallows any input until it receives the specified string, and the next recv() will start reading from after that point. 
+We only need the output after the prefix 'buf is at '; fortunately, the recvuntil() function gives us a very simple way to do this! recvuntil() essentially swallows any input until it receives the specified string, and the next recvline() will start reading from after that point. 
 ```
 p.recvuntil(b'buf is at ') <- update our script with this! Make sure the string is a bytestream (b prefix)
 print(p.recvline())
