@@ -58,6 +58,8 @@ Thus, our attack vector becomes clear: We will pad the buffer up to the space fo
 
 #### pwntools
 
+Stubs for our exploits have been provided in the exploit.py files in each respective directory. 
+
 To construct our exploit scripts, we will be making use of a very helpful python module called pwntools. In addition to allowing us to construct precise bytestream inputs for a target binary, 
 it has functionality like tools to determine the offset required to hit a return address and automatic shellcode generation. For this first challenge, we will be making use of the [cyclic](https://docs.pwntools.com/en/stable/util/cyclic.html) tool. 
 
