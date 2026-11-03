@@ -55,3 +55,10 @@ tmux
 Resources: 
 - [Smashing the Stack](https://phrack.org/issues/49/smashing-the-stack-for-fun-and-profit)
 - [CS 6265 Tutorials](https://tc.gts3.org/cs6265/tut/)
+- [pwntools documentation](https://docs.pwntools.com/)
+    - [cyclic](https://docs.pwntools.com/en/stable/util/cyclic.html)
+    - [p32 and other packing functions](https://docs.pwntools.com/en/stable/util/packing.html)
+    - [recv functions](https://docs.pwntools.com/en/stable/tubes.html)
+    - [shellcraft](https://docs.pwntools.com/en/stable/shellcraft.html)
+
+A guide should be released after the lab!
