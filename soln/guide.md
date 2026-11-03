@@ -58,7 +58,12 @@ Thus, our attack vector becomes clear: We will pad the buffer up to the space fo
 
 #### pwntools
 
-Stubs for our exploits have been provided in the exploit.py files in each respective directory. 
+Stubs for our exploits have been provided in the exploit.py files in each respective directory. If you'd like to test your exploit, you can either run it directly or in GDB with the following commands: 
+
+```
+./exploit.py
+./exploit.py --debug
+```
 
 To construct our exploit scripts, we will be making use of a very helpful python module called pwntools. In addition to allowing us to construct precise bytestream inputs for a target binary, 
 it has functionality like tools to determine the offset required to hit a return address and automatic shellcode generation. For this first challenge, we will be making use of the [cyclic](https://docs.pwntools.com/en/stable/util/cyclic.html) tool. 
@@ -67,15 +72,18 @@ The cyclic function allows us to construct a unique non-repeating sequence of ch
 input buffer. The idea is that the non-repeating nature of the sequence allows us to easily determine how much padding was required to reach the return address based on the address that our program 
 faults on (i.e. what the return address was overwritten with). 
 
-We can see this in action by sending a payload using this cyclic pattern and observing the results in gdb via the --debug flag (this will need to be run in tmux!)
+We can see this in action by sending a payload using this cyclic pattern and observing the results in gdb via the --debug flag (this will need to be run in tmux!) Update the payload in exploit.py: 
 
 ```
 payload = cyclic(100)
 ```
 
-When we run the program, we can see that we end up hitting a segfault with the following message: 
+When we run the program, we can see from GDB that we end up hitting a segfault with the following message: 
 
 ```
+tmux
+./exploit.py --debug
+...
 Program received signal SIGSEGV, Segmentation fault.
 0x61616174 in ?? ()
 ```
@@ -85,6 +93,8 @@ We can then use cyclic_find (pwn cyclic -l in the terminal) to determine the off
 ```
 student@5df7596926ed:/bufovf-demo/ret2win$ pwn cyclic -l 0x61616174
 76
+
+or cyclic_find(0x61616174) in your exploit script
 ```
 Great, looks like we need 76 bytes of padding to reach the return address! As it turns out, this lines up with what we can observe from within GDB: 
 
@@ -96,8 +106,14 @@ Great, looks like we need 76 bytes of padding to reach the return address! As it
 ```
 
 We observe that the argument being loaded for the buffer location is at ebp - 0x48, or 72 bytes in decimal. Accounting for the additional 4 bytes required to overwrite the ebp
-itself yields 76 bytes, as expected. Finally, we need to determine the address of win() for our function to return to. This is relatively simple to determine in GDB via disassembly of the win function, and should come out as
-0x080491b6. 
+itself yields 76 bytes, as expected (Note - disassembly of the vuln function with disas /s yields a nice output that displays the source code alongside the disassembly, which might make it easier to parse). 
+
+Finally, we need to determine the address of win() for our function to return to. This is relatively simple to determine in GDB via disassembly of the win function, and should come out as
+0x080491b6. We can also retrieve it directly by running the following in GDB: 
+
+```
+p &win
+```
 
 We're almost ready to construct our payload! One last note - x86 is a little-endian system, and expects any addresses it reads from the stack to be structured accordingly. pwntools provides
 us with the p32() to convert any value to an appropriately formatted little-endian 32-bit input, which we will use for this exploit. 
