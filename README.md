@@ -45,7 +45,7 @@ Protections for this challenge:
 
 ## Setup Information
 
-Start the docker image with `./run.sh`. To run your exploit against the target binary, simply run `./exploit.py`. If you would like to step through in gdb, run the exploit in tmux: 
+Start the docker image with `./run.sh` (You might need to chmod +x this file if it doesn't let you execute). To run your exploit against the target binary, simply run `./exploit.py`. If you would like to step through in gdb, run the exploit in tmux: 
 
 ```
 tmux
